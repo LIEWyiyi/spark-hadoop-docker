@@ -2,28 +2,47 @@
 
 为了免去繁杂的环境配置工作，提供开箱即用的 Spark + Hadoop 快捷部署方案。基于 [BitNami](https://github.com/bitnami/bitnami-docker-spark) 项目的成熟镜像方案，搭建 Spark Docker 集群，并在原有镜像基础上，构建了安装有对应版本 Hadoop 的镜像。详细构建过程请参考：[使用 Docker 快速部署 Spark + Hadoop 大数据集群](https://s1mple.cc/2021/10/12/%E4%BD%BF%E7%94%A8-Docker-%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2-Spark-Hadoop-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4/)。
 
-- Spark Version：3.1.2
-- Hadoop Version：3.2.0
+优化：版本更新；native警告修复。
+
+- Spark Version：3.2.0
+- Hadoop Version：3.3.1
 
 ## 如何运行
 
-拉取镜像：
+1. 拉取镜像：
 
 ```sh
-docker pull s1mplecc/spark-hadoop:3
+docker pull bitnami/spark:latest
 ```
 
-拷贝项目中的 docker-compose.yml 至本地，执行如下命令启动集群：
+2. 下载Hadoop安装包，放到目录下：
+
+https://dlcdn.apache.org/hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz
+
+3. 构建镜像：
+
+```
+docker build -t liewyiyi/spark-hadoop .
+```
+
+4. 拷贝项目中的 docker-compose.yml 至本地，执行如下命令启动集群：
 
 ```
 docker-compose up -d
 ```
 
-在容器内运行 Hadoop 启动脚本：
+5. 在Master容器内运行 Hadoop 启动脚本：
 
 ```sh
-$ ./start-hadoop.sh
+$ ./start-hadoop.sh	
 ```
+
+6. 检查native
+
+   ```
+   hadoop checknative -a
+   spark-shell
+   ```
 
 ## 运行 MapReduce 示例程序
 
